@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
 
-                Log.i("location",location.toString());
+                updateLocationInfo(location);
 
             }
 
@@ -79,7 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateLocationInfo(Location location){
 
-        Log.i("Location", location.toString());
+        TextView latView =(TextView) findViewById(R.id.latView);
+        TextView longView =(TextView) findViewById(R.id.longView);
+        TextView accuracyView =(TextView) findViewById(R.id.accuracyView);
+        TextView altitudeView =(TextView) findViewById(R.id.altitudeView);
+        TextView addressView =(TextView) findViewById(R.id.addressView);
+
+        latView.setText("Latitude: "+Double.toString(location.getLatitude()));
+        longView.setText("Longitude: "+Double.toString(location.getLongitude()));
+        accuracyView.setText("Accuracy: "+Double.toString(location.getAccuracy()));
+        altitudeView.setText("Latitude: "+Double.toString(location.getAltitude()));
+
 
     }
 
