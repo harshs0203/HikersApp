@@ -7,12 +7,17 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,8 +94,47 @@ public class MainActivity extends AppCompatActivity {
         latView.setText("Latitude: "+Double.toString(location.getLatitude()));
         longView.setText("Longitude: "+Double.toString(location.getLongitude()));
         accuracyView.setText("Accuracy: "+Double.toString(location.getAccuracy()));
-        altitudeView.setText("Latitude: "+Double.toString(location.getAltitude()));
+        altitudeView.setText("Altitude: "+Double.toString(location.getAltitude()));
 
+        String address="Could not find Address :(";
+        Geocoder geocoder =  new Geocoder(getApplicationContext(), Locale.getDefault());
+        try{
+
+          List<Address> addressList=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+
+           if(addressList != null && addressList.size() > 0){
+
+               address="Address\n";
+
+               if(addressList.get(0).getThoroughfare() != null){
+
+                   address += (addressList.get(0).getThoroughfare()+"\n");
+
+               }
+               if(addressList.get(0).getAdminArea() != null){
+
+                   address += (addressList.get(0).getAdminArea()+"\n");
+
+               }
+               if(addressList.get(0).getLocality() != null){
+
+                   address += (addressList.get(0).getLocality()+" ");
+
+               }
+               if(addressList.get(0).getPostalCode() != null){
+
+                   address += (addressList.get(0).getPostalCode());
+
+               }
+
+           }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+        addressView.setText(address);
 
     }
 
